@@ -1,0 +1,730 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>استمارة الأعباء العائلية</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+/* Layout: one column working form with a tab to an A4 preview and a sticky export bar.
+   Colour: cool paper, petrol-blue accent, amber only for the clear-all confirmation.
+   Type: IBM Plex Sans Arabic for the interface, Arial for the printed sheet. */
+:root {
+  --bg: #f3f6f7;
+  --surface: #ffffff;
+  --field: #ffffff;
+  --ink: #12222b;
+  --muted: #55676f;
+  --line: #cfd9dd;
+  --accent: #0b5c78;
+  --accent-ink: #ffffff;
+  --accent-soft: #dcecf2;
+  --warn: #a35a00;
+  --warn-soft: #fbead0;
+  --shadow: 0 1px 2px rgba(18, 34, 43, .08), 0 6px 24px rgba(18, 34, 43, .08);
+  --ui: 'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1a20; --surface: #16252d; --field: #0f1a20; --ink: #e6eef1; --muted: #9fb2ba;
+    --line: #2c424c; --accent: #6bc1de; --accent-ink: #08222c; --accent-soft: #19384a;
+    --warn: #f0b35a; --warn-soft: #3a2b12; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 24px rgba(0,0,0,.35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1a20; --surface: #16252d; --field: #0f1a20; --ink: #e6eef1; --muted: #9fb2ba;
+  --line: #2c424c; --accent: #6bc1de; --accent-ink: #08222c; --accent-soft: #19384a;
+  --warn: #f0b35a; --warn-soft: #3a2b12; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 24px rgba(0,0,0,.35);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { direction: rtl; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--ui); font-size: 15px; line-height: 1.6;
+  padding-block: 20px 110px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 880px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+.top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.top h1 { margin: 0; font-size: 24px; font-weight: 600; text-wrap: balance; }
+.top p { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+button { font: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ghost { background: transparent; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; }
+.ghost:hover { color: var(--ink); border-color: var(--muted); }
+.ghost.confirm { color: var(--warn); background: var(--warn-soft); border-color: var(--warn); }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); }
+.tab { background: none; border: 0; border-bottom: 3px solid transparent; padding: 10px 18px; color: var(--muted); font-weight: 500; margin-bottom: -1px; }
+.tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+section.blk { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+section.blk h2 { margin: 0; font-size: 17px; font-weight: 600; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.f { display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; color: var(--muted); font-weight: 500; min-width: 0; }
+input[type="text"], input[type="date"], select {
+  width: 100%; min-width: 0; font: inherit; font-size: 15px; color: var(--ink); background: var(--field);
+  border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; min-height: 40px;
+}
+.hint { font-size: 13px; color: var(--muted); margin: 0; }
+.radios { display: flex; flex-direction: column; gap: 8px; }
+.radio { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; }
+.radio input[type="radio"] { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; }
+.radio label.rl { font-weight: 500; min-width: 90px; }
+.radio .dwrap { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 200px; color: var(--muted); font-size: 13.5px; }
+.radio .dwrap input { max-width: 200px; }
+.radio.on { border-color: var(--accent); background: var(--accent-soft); }
+.kid { display: grid; grid-template-columns: 30px 1fr; gap: 6px 10px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; }
+.kid-n { grid-row: 1 / span 2; width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-weight: 600; font-variant-numeric: tabular-nums; margin-top: 18px; }
+.kid-f { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.kid-f .wide { grid-column: span 2; }
+@media (max-width: 520px) { .kid-f .wide { grid-column: auto; } }
+.kid-x { justify-self: start; }
+.list { display: flex; flex-direction: column; gap: 10px; }
+.add { align-self: flex-start; background: var(--accent-soft); color: var(--accent); border: 1px dashed var(--accent); border-radius: 6px; padding: 8px 14px; font-weight: 500; }
+.add:disabled { opacity: .5; cursor: not-allowed; }
+.bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--surface); border-top: 1px solid var(--line);
+  padding: 10px max(16px, env(safe-area-inset-left, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-right, 0px));
+  box-shadow: var(--shadow);
+}
+.bar-in { max-width: 880px; margin: 0 auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.btn { border: 0; border-radius: 8px; padding: 10px 20px; font-weight: 600; background: var(--accent); color: var(--accent-ink); min-height: 42px; }
+.btn.alt { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+.status { flex: 1; min-width: 160px; font-size: 13.5px; color: var(--muted); }
+.status.err { color: var(--warn); }
+.pv-wrap { position: relative; overflow: hidden; }
+.pv-in { position: absolute; top: 0; right: 0; width: 794px; transform-origin: top right; display: flex; flex-direction: column; gap: 24px; }
+.pv-in .sheet { box-shadow: var(--shadow); flex: none; }
+.export-host { position: fixed; left: -12000px; top: 0; width: 794px; }
+
+/* printed sheet: white paper, black ink, laid out like the company's original form */
+.sheet { width: 794px; height: 1123px; background: #fff; color: #000; font-family: Arial, 'Liberation Sans', Tahoma, sans-serif; font-weight: 700; font-size: 14px; line-height: 1.45; direction: rtl; position: relative; overflow: hidden; padding: 47px 63px 0; }
+.frame1 { position: absolute; inset: 34px 36px; border: 4px double #000; pointer-events: none; }
+.frame2 { position: absolute; inset: 34px 36px; border: 4px double #000; pointer-events: none; }
+.sh-head { text-align: center; }
+.sh-head div { line-height: 26px; }
+.h1 { font-size: 19px; } .h2 { font-size: 18px; } .h3 { font-size: 17px; }
+.rrow { display: flex; margin-top: 4px; }
+.rrow.gap { gap: 26px; }
+.rf { flex: 1; display: flex; align-items: flex-end; gap: 8px; min-width: 0; font-size: 14.5px; }
+.rf b { white-space: nowrap; }
+.dv { flex: 1; min-width: 0; min-height: 19px; border-bottom: 1px dotted #000; padding: 0 4px; font-weight: 400; overflow-wrap: anywhere; font-size: 14px; }
+.mrow { display: flex; gap: 13px; margin-top: 7px; margin-bottom: 4px; }
+.mg { flex: 1; border-collapse: collapse; table-layout: fixed; }
+.mg th, .mg td { border: 1px solid #000; text-align: center; font-size: 13px; padding: 0 2px; height: 26px; }
+.mg td { height: 28px; font-weight: 400; font-size: 14px; }
+.dt { direction: ltr; unicode-bidi: isolate; }
+.sh-t { width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; }
+.sh-t th, .sh-t td { border: 1px solid #000; height: 22px; padding: 0 4px; text-align: center; font-size: 13px; overflow: hidden; font-weight: 400; }
+.sh-t th { font-weight: 700; } .sh-t td:first-child { font-weight: 700; }
+.sh-t .c1 { width: 5.6%; } .sh-t .c2 { width: 40%; } .sh-t .c3 { width: 18%; } .sh-t .c4 { width: 11.7%; }
+.sh-notes { margin-top: 8px; }
+.nt { font-size: 13px; text-decoration: underline; margin-bottom: 6px; }
+.sh-notes ol { margin: 0; padding-right: 20px; list-style: none; font-size: 12px; line-height: 17px; }
+.sh-notes li { margin-bottom: 3px; position: relative; }
+.sh-notes .no { position: absolute; right: -20px; }
+.fo1 { position: absolute; right: 63px; left: 63px; bottom: 76px; display: flex; justify-content: space-between; align-items: flex-start; font-size: 14px; line-height: 22px; }
+.fo-r { padding-right: 20px; }
+.fo-l { width: 150px; text-align: center; }
+.next { position: absolute; left: 0; right: 0; bottom: 44px; text-align: center; font-size: 13px; }
+.t2 { text-align: center; font-size: 20px; text-decoration: underline; margin-top: 8px; }
+.to { margin-top: 36px; }
+.pledge { text-align: justify; font-size: 15.5px; line-height: 30px; margin: 26px 0 0; }
+.girls { margin-top: 28px; }
+.gr { display: flex; align-items: flex-end; gap: 10px; height: 38px; font-size: 14px; }
+.gn { width: 26px; }
+.gr .gd { flex: 0 0 150px; }
+.n2a { margin-top: 34px; font-size: 12.5px; }
+.fo2 { position: absolute; left: 60px; width: 140px; bottom: 91px; text-align: right; font-size: 14px; line-height: 26px; }
+.n2b { position: absolute; right: 63px; bottom: 46px; font-size: 13.5px; text-decoration: underline; }
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>استمارة الأعباء العائلية</h1>
+      <p>شركة نفط الشمال · الجرد السنوي ٢٠٢٧/٢٠٢٦ · مع استمارة تعهد بنات المنتسبين</p>
+    </div>
+    <button type="button" class="ghost" id="clearBtn">مسح كل الحقول</button>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button type="button" class="tab" role="tab" id="tab-fill" aria-selected="true" aria-controls="panel-fill">التعبئة</button>
+    <button type="button" class="tab" role="tab" id="tab-prev" aria-selected="false" aria-controls="panel-prev">معاينة الاستمارة</button>
+  </div>
+
+  <div id="panel-fill" role="tabpanel" aria-labelledby="tab-fill" style="display:flex;flex-direction:column;gap:20px">
+    <section class="blk">
+      <h2>بيانات الموظف</h2>
+      <div class="grid">
+        <label class="f" for="empName">الاسم<input id="empName" data-k="empName" type="text" autocomplete="off"></label>
+        <label class="f" for="companyNo">رقم الشركة<input id="companyNo" data-k="companyNo" type="text" inputmode="numeric" autocomplete="off"></label>
+        <label class="f" for="jobTitle">العنوان الوظيفي<input id="jobTitle" data-k="jobTitle" type="text" autocomplete="off"></label>
+        <label class="f" for="dept">القسم<input id="dept" data-k="dept" type="text" autocomplete="off"></label>
+      </div>
+    </section>
+
+    <section class="blk">
+      <h2>الحالة الاجتماعية</h2>
+      <div class="radios" role="radiogroup" aria-label="الحالة الاجتماعية">
+        <div class="radio" data-opt="married">
+          <input type="radio" name="marital" id="m-married" value="married"><label class="rl" for="m-married">أ- متزوج</label>
+          <div class="dwrap" data-dw="married" hidden><label for="marriageDate">تاريخ الزواج</label><input id="marriageDate" data-k="marriageDate" type="date"></div>
+        </div>
+        <div class="radio" data-opt="widowed">
+          <input type="radio" name="marital" id="m-widowed" value="widowed"><label class="rl" for="m-widowed">ب- أرمل</label>
+          <div class="dwrap" data-dw="widowed" hidden><label for="deathDate">تاريخ الوفاة</label><input id="deathDate" data-k="deathDate" type="date"></div>
+        </div>
+        <div class="radio" data-opt="divorced">
+          <input type="radio" name="marital" id="m-divorced" value="divorced"><label class="rl" for="m-divorced">ج- مطلق</label>
+          <div class="dwrap" data-dw="divorced" hidden><label for="divorceDate">تاريخ الطلاق</label><input id="divorceDate" data-k="divorceDate" type="date"></div>
+        </div>
+      </div>
+      <div class="grid">
+        <label class="f" for="spouseName">اسم الزوج / الزوجة<input id="spouseName" data-k="spouseName" type="text" autocomplete="off"></label>
+        <label class="f" for="spouseJob">مهنة الزوج / الزوجة<input id="spouseJob" data-k="spouseJob" type="text" autocomplete="off"></label>
+        <label class="f" for="spouseWork">مكان العمل (الزوج / الزوجة)<input id="spouseWork" data-k="spouseWork" type="text" autocomplete="off"></label>
+      </div>
+    </section>
+
+    <section class="blk">
+      <h2>الأطفال</h2>
+      <div class="grid">
+        <label class="f" for="childrenCount">عدد الأطفال رقماً<input id="childrenCount" data-k="childrenCount" type="text" inputmode="numeric" autocomplete="off"></label>
+      </div>
+      <p class="hint">اترك العدد فارغاً ليُحسب من الأسماء المدخلة.</p>
+      <div class="list" id="kids"></div>
+      <button type="button" class="add" id="addKid">+ إضافة طفل</button>
+    </section>
+
+    <section class="blk">
+      <h2>تعهد بنات المنتسبين</h2>
+      <p class="hint">أتعهد بأن بناتي المبينة أسماؤهن وتوليداتهن غير معينات ولا متزوجات ولا مطلقات ولا أرامل. تُملأ الاستمارة حتى لو لم يكن هناك أي متغيرات.</p>
+      <div class="list" id="girls"></div>
+      <button type="button" class="add" id="addGirl">+ إضافة ابنة</button>
+    </section>
+
+    <section class="blk">
+      <h2>التوقيع</h2>
+      <div class="grid">
+        <label class="f" for="signDate">تاريخ التوقيع<input id="signDate" data-k="signDate" type="date"></label>
+      </div>
+      <p class="hint">إذا تركته فارغاً يبقى سطر التاريخ منقطاً لتكتبه بخط اليد. التوقيع والختم يوضعان على الورقة المطبوعة.</p>
+    </section>
+  </div>
+
+  <div id="panel-prev" role="tabpanel" aria-labelledby="tab-prev" hidden>
+    <div class="pv-wrap" id="pvWrap"><div class="pv-in" id="pvIn"></div></div>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="bar-in">
+    <button type="button" class="btn" id="pdfBtn">تصدير PDF</button>
+    <button type="button" class="btn alt" id="docxBtn">تصدير Word</button>
+    <div class="status" id="status" role="status" aria-live="polite">الحقول تُحفظ تلقائياً في هذا المتصفح.</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/docx@9.8.1/dist/index.iife.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function (root) {
+  'use strict';
+
+  var NOTES1 = [
+    'الموظفون والموظفات الذين أزواجهم معيلون خارج الشركة جلب كتاب تأييد بعدم تقاضي الزوجية والأطفال يرفق مع الاستمارة حتى إذا كان الأطفال قاصرين .',
+    'الموظفات اللاتي أزواجهم من الكسبة ، جلب مضبطة تأييد صادرة من المختار يثبت أن الزوج ( كاسب ) .',
+    'الموظفون والموظفات الذين يتقاضون مخصصات الزوجية من شركتنا .',
+    'الطلاب الذكور الذين تنحصر أعمارهم ما بين ( 2004 - 2009 ) جلب كتاب تأييد استمرار بالدراسة للعام ( 2026 - 2027 ) . وسوف يتم ايقاف تولد 2003 ببلوغه الحد الأعلى 24 سنة .',
+    'الإناث من مواليد 2009 فما دون الاكتفاء بالتعهد الخطي في ظهر الاستمارة مع نسخة من هوية الأحوال المدنية او البطاقة الوطنية .',
+    'في حال وجود أي تغيير في الحالة الاجتماعية ( زواج - طلاق - وفاة ) إعلام قسم الموارد البشرية .',
+    'على الموظف تدقيق مخصصات الزوجية والأطفال في قائمة راتبه شهرياً وفي حالة حدوث أي خطأ مراجعة قسم الموارد البشرية فوراً لتلافي الخطأ إن وجد .',
+    'تملأ الاستمارة من قبل جميع الموظفين .'
+  ];
+  var NOTES1_TITLE = 'المستمسكات المطلوبة والمشمولين بملء الاستمارة :';
+  var TITLE_ORG = 'شركة نفط الشمال / شركة عامة';
+  var TITLE1 = 'استمارة الأعباء العائلية';
+  var TITLE_YEAR = 'الجرد السنوي لسنة 2027/2026';
+  var TITLE2 = 'استمارة تعهد لبنات المنتسبين';
+  var PLEDGE = 'أتعهد بأن بناتي المبينة أسماؤهن وتوليداتهن في أدناه غير (معينات ولا متزوجات ولا مطلقات ولا أرامل) وأتحمل المسؤولية إذا ظهر خلاف ذلك ولأجله وقعت.';
+  var NOTE2A = 'ملاحظة/ ترفق صورة ملونة من البطاقة الموحدة لكل واحدة من المذكورات أعلاه.';
+  var NOTE2B = 'ملاحظة : تملأ الاستمارة حتى لو لم يكن هناك أي متغيرات';
+  var NEXT = 'يتبع رجاءً ←';
+
+  var MAX_CHILDREN = 8;
+  var MAX_DAUGHTERS = 10;
+  var CHILD_ROWS = 8;
+
+  function esc(t) {
+    return ar(String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'));
+  }
+  function fmt(d) { return d ? String(d).replace(/-/g, '/') : ''; }
+  function ar(n) { return String(n).replace(/[0-9]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'.charAt(+d); }); }
+
+  function emptyChild() { return { name: '', dob: '', gender: '', notes: '' }; }
+  function emptyDaughter() { return { name: '', dob: '' }; }
+
+  function blankState() {
+    var kids = [], girls = [], i;
+    for (i = 0; i < 3; i++) kids.push(emptyChild());
+    for (i = 0; i < 5; i++) girls.push(emptyDaughter());
+    return {
+      empName: '', companyNo: '', jobTitle: '', dept: '',
+      marital: '', marriageDate: '', deathDate: '', divorceDate: '',
+      spouseName: '', spouseJob: '', spouseWork: '',
+      childrenCount: '',
+      children: kids, daughters: girls,
+      signDate: ''
+    };
+  }
+
+  function childrenCount(s) {
+    if (String(s.childrenCount).trim() !== '') return String(s.childrenCount).trim();
+    var n = s.children.filter(function (c) { return String(c.name).trim(); }).length;
+    return n ? String(n) : '';
+  }
+  function childRows(s) {
+    var rows = s.children.slice(0, CHILD_ROWS);
+    while (rows.length < CHILD_ROWS) rows.push(emptyChild());
+    return rows;
+  }
+  function maritalGroups(s) {
+    return [
+      { key: 'married', head: '١ - أ- متزوج', dh: 'تاريخ الزواج', date: s.marriageDate },
+      { key: 'widowed', head: 'ب- أرمل', dh: 'تاريخ الوفاة', date: s.deathDate },
+      { key: 'divorced', head: 'ج- مطلق', dh: 'تاريخ الطلاق', date: s.divorceDate }
+    ];
+  }
+  function signDateText(s) { return s.signDate ? fmt(s.signDate) : ''; }
+
+  /* ---------- HTML sheets (preview + PDF) ---------- */
+  function sheetsHTML(s) {
+    function rf(label, val, flex) {
+      return '<div class="rf"' + (flex ? ' style="flex:' + flex + '"' : '') + '><b>' + esc(label) + '</b><span class="dv">' + esc(val) + '</span></div>';
+    }
+    var sd = signDateText(s);
+    var dateLine = sd ? 'التاريخ ' + esc(sd) : 'التاريخ';
+
+    var groups = maritalGroups(s).map(function (g) {
+      var on = s.marital === g.key;
+      return '<table class="mg"><tr><th>' + esc(g.head) + '</th><th>' + esc(g.dh) + '</th></tr>' +
+        '<tr><td>' + (on ? '&#10003;' : '') + '</td><td class="dt">' + (on ? esc(fmt(g.date)) : '') + '</td></tr></table>';
+    }).join('');
+
+    var rows = childRows(s).map(function (c, i) {
+      return '<tr><td>' + ar(i + 1) + '</td><td>' + esc(c.name) + '</td><td class="dt">' + esc(fmt(c.dob)) + '</td><td>' + esc(c.gender) + '</td><td>' + esc(c.notes) + '</td></tr>';
+    }).join('');
+
+    var notes1 = NOTES1.map(function (n, i) { return '<li><span class="no">' + ar(i + 1) + '.</span>' + esc(n) + '</li>'; }).join('');
+
+    var p1 =
+      '<div class="sheet sheet-1"><div class="frame1"></div>' +
+        '<div class="sh-head"><div class="h1">' + esc(TITLE_ORG) + '</div><div class="h2">' + esc(TITLE1) + '</div><div class="h3">' + esc(TITLE_YEAR) + '</div></div>' +
+        '<div class="rrow gap">' + rf('الاسم:', s.empName) + rf('رقم الشركة:', s.companyNo) + '</div>' +
+        '<div class="rrow gap">' + rf('القسم:', s.dept) + rf('العنوان الوظيفي:', s.jobTitle) + '</div>' +
+        '<div class="mrow">' + groups + '</div>' +
+        '<div class="rrow">' + rf('٢ - اسم الزوج / الزوجة ؟', s.spouseName) + '</div>' +
+        '<div class="rrow">' + rf('٣ - مهنة الزوج / الزوجة ؟', s.spouseJob) + '</div>' +
+        '<div class="rrow gap">' + rf('٤ - عدد الأطفال رقماً:', childrenCount(s), '0.8') + rf('مكان العمل الزوج/الزوجة/', s.spouseWork, '1.2') + '</div>' +
+        '<table class="sh-t"><thead><tr><th class="c1">ت</th><th class="c2">الاسم الثلاثي</th><th class="c3">تاريخ الولادة</th><th class="c4">الجنس</th><th class="c5">الملاحظات</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+        '<div class="sh-notes"><div class="nt">' + esc(NOTES1_TITLE) + '</div><ol>' + notes1 + '</ol></div>' +
+        '<div class="fo1"><div class="fo-r"><div>توقيع الموظف</div><div>' + dateLine + '</div></div><div class="fo-l"><div>توقيع المسؤول الإداري</div><div>ختم الدائرة</div></div></div>' +
+        '<div class="next">' + esc(NEXT) + '</div>' +
+      '</div>';
+
+    var girls = s.daughters.map(function (d, i) {
+      return '<div class="gr"><span class="gn">' + ar(i + 1) + '-</span><span class="dv">' + esc(d.name) + '</span><b>من مواليد</b><span class="dv gd">' + esc(fmt(d.dob)) + '</span></div>';
+    }).join('');
+
+    var p2 =
+      '<div class="sheet sheet-2"><div class="frame2"></div>' +
+        '<div class="t2">' + esc(TITLE2) + '</div>' +
+        '<div class="rrow to">' + rf('إني الموظف', s.empName) + '</div>' +
+        '<p class="pledge">' + esc(PLEDGE) + '</p>' +
+        '<div class="girls">' + girls + '</div>' +
+        '<div class="n2a">' + esc(NOTE2A) + '</div>' +
+        '<div class="fo2"><div>توقيع الموظف</div><div>' + dateLine + '</div></div>' +
+        '<div class="n2b">' + esc(NOTE2B) + '</div>' +
+      '</div>';
+
+    return p1 + p2;
+  }
+
+  /* ---------- DOCX ---------- */
+  function buildDocx(s, D) {
+    var Paragraph = D.Paragraph, TextRun = D.TextRun, Table = D.Table, TableRow = D.TableRow, TableCell = D.TableCell,
+        WidthType = D.WidthType, AlignmentType = D.AlignmentType, BorderStyle = D.BorderStyle,
+        VerticalAlign = D.VerticalAlign, HeightRule = D.HeightRule;
+
+    var FONT = { ascii: 'Arial', hAnsi: 'Arial', cs: 'Arial', eastAsia: 'Arial' };
+    var W = 10206;
+
+    function run(text, o) {
+      o = o || {};
+      var size = o.size || 22;
+      return new TextRun({
+        text: ar(text), font: FONT, rightToLeft: true, size: size, sizeComplexScript: size,
+        bold: o.bold !== false, boldComplexScript: o.bold !== false,
+        underline: o.underline ? {} : undefined
+      });
+    }
+    function para(runs, o) {
+      o = o || {};
+      return new Paragraph({
+        bidirectional: true,
+        alignment: o.center ? AlignmentType.CENTER : undefined,
+        spacing: { before: o.before || 0, after: o.after == null ? 80 : o.after, line: o.line || 300 },
+        children: runs
+      });
+    }
+    function dots(v, n) { return String(v).trim() ? String(v) : new Array((n || 30) + 1).join('.'); }
+
+    var none = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
+    var thin = { style: BorderStyle.SINGLE, size: 6, color: '000000' };
+    var dotted = { style: BorderStyle.DOTTED, size: 6, color: '000000' };
+    var noB = { top: none, bottom: none, left: none, right: none };
+    var allB = { top: thin, bottom: thin, left: thin, right: thin };
+
+    function cell(children, width, o) {
+      o = o || {};
+      return new TableCell({
+        width: { size: width, type: WidthType.DXA },
+        borders: o.borders || noB,
+        verticalAlign: VerticalAlign.CENTER,
+        margins: { top: 40, bottom: 40, left: 80, right: 80 },
+        children: children
+      });
+    }
+    function grid(rows, widths, bordered, heights) {
+      var b = bordered ? { top: thin, bottom: thin, left: thin, right: thin, insideHorizontal: thin, insideVertical: thin }
+                       : { top: none, bottom: none, left: none, right: none, insideHorizontal: none, insideVertical: none };
+      return new Table({
+        width: { size: W, type: WidthType.DXA }, columnWidths: widths, visuallyRightToLeft: true, borders: b,
+        rows: rows.map(function (cells, i) {
+          return new TableRow({ height: heights ? { value: heights[i] || heights[0], rule: HeightRule.ATLEAST } : undefined, children: cells });
+        })
+      });
+    }
+    function lv(label, val, n) { return [run(label + ' ', { size: 22 }), run(dots(val, n), { bold: false, size: 22 })]; }
+    function two(a, b) {
+      var w = Math.floor(W / 2);
+      return grid([[cell([para(a, { after: 0 })], w), cell([para(b, { after: 0 })], w)]], [w, w], false);
+    }
+
+    /* page 1 */
+    var p1 = [];
+    p1.push(para([run(TITLE_ORG, { size: 26 })], { center: true, after: 60 }));
+    p1.push(para([run(TITLE1, { size: 26 })], { center: true, after: 60 }));
+    p1.push(para([run(TITLE_YEAR, { size: 26 })], { center: true, after: 160 }));
+    p1.push(two(lv('الاسم:', s.empName, 26), lv('رقم الشركة:', s.companyNo, 20)));
+    p1.push(two(lv('القسم:', s.dept, 26), lv('العنوان الوظيفي:', s.jobTitle, 20)));
+    p1.push(para([], { after: 100 }));
+
+    var mw = [1500, 1500, 1500, 1500, 1500, 1500].map(function (x) { return x; });
+    var gs = maritalGroups(s);
+    var mh = [], mv = [];
+    gs.forEach(function (g) {
+      var on = s.marital === g.key;
+      mh.push(cell([para([run(g.head, { size: 20 })], { center: true, after: 0 })], 1700, { borders: allB }));
+      mh.push(cell([para([run(g.dh, { size: 20 })], { center: true, after: 0 })], 1700, { borders: allB }));
+      mv.push(cell([para([run(on ? '✓' : ' ', { size: 22 })], { center: true, after: 0 })], 1700, { borders: allB }));
+      mv.push(cell([para([run(on ? fmt(g.date) : ' ', { size: 20, bold: false })], { center: true, after: 0 })], 1700, { borders: allB }));
+    });
+    p1.push(new Table({
+      width: { size: 10200, type: WidthType.DXA }, columnWidths: [1700, 1700, 1700, 1700, 1700, 1700], visuallyRightToLeft: true,
+      borders: { top: thin, bottom: thin, left: thin, right: thin, insideHorizontal: thin, insideVertical: thin },
+      rows: [new TableRow({ height: { value: 420, rule: HeightRule.ATLEAST }, children: mh }), new TableRow({ height: { value: 480, rule: HeightRule.ATLEAST }, children: mv })]
+    }));
+    p1.push(para([], { after: 120 }));
+    p1.push(para(lv('٢ - اسم الزوج / الزوجة ؟', s.spouseName, 60), { after: 120 }));
+    p1.push(para(lv('٣ - مهنة الزوج / الزوجة ؟', s.spouseJob, 60), { after: 120 }));
+    p1.push(grid([[
+      cell([para(lv('٤ - عدد الأطفال رقماً:', childrenCount(s), 14), { after: 0 })], 4400),
+      cell([para(lv('مكان العمل الزوج/الزوجة/', s.spouseWork, 28), { after: 0 })], 5806)
+    ]], [4400, 5806], false));
+    p1.push(para([], { after: 120 }));
+
+    var cw = [570, 4030, 1840, 1190, 2576];
+    var head = ['ت', 'الاسم الثلاثي', 'تاريخ الولادة', 'الجنس', 'الملاحظات'];
+    var trows = [head.map(function (h, i) { return cell([para([run(h, { size: 20 })], { center: true, after: 0 })], cw[i], { borders: allB }); })];
+    childRows(s).forEach(function (c, r) {
+      var vals = [ar(r + 1), c.name, fmt(c.dob), c.gender, c.notes];
+      trows.push(vals.map(function (v, i) {
+        return cell([para([run(v, { size: 20, bold: i === 0 })], { center: true, after: 0 })], cw[i], { borders: allB });
+      }));
+    });
+    p1.push(grid(trows, cw, true, [400]));
+
+    p1.push(para([run(NOTES1_TITLE, { size: 19, underline: true })], { before: 200, after: 80 }));
+    NOTES1.forEach(function (n, i) { p1.push(para([run((i + 1) + '. ' + n, { size: 18 })], { after: 40 })); });
+
+    var sd = signDateText(s);
+    var dateTxt = 'التاريخ' + (sd ? ' ' + sd : '');
+    p1.push(para([], { before: 300, after: 0 }));
+    p1.push(grid([[
+      cell([para([run('توقيع الموظف', { size: 22 })], { after: 40 }), para([run(dateTxt, { size: 22 })], { after: 0 })], 5100),
+      cell([para([run('توقيع المسؤول الإداري', { size: 22 })], { center: true, after: 40 }), para([run('ختم الدائرة', { size: 22 })], { center: true, after: 0 })], 5106)
+    ]], [5100, 5106], false));
+    p1.push(para([run(NEXT, { size: 22 })], { center: true, before: 160, after: 0 }));
+
+    /* page 2 */
+    var p2 = [];
+    p2.push(para([run(TITLE2, { size: 30, underline: true })], { center: true, before: 120, after: 360 }));
+    p2.push(para(lv('إني الموظف', s.empName, 60), { after: 300 }));
+    p2.push(new Paragraph({ bidirectional: true, alignment: AlignmentType.BOTH, spacing: { after: 360, line: 420 }, children: [run(PLEDGE, { size: 24 })] }));
+    var gw = [500, 5200, 1400, 3106];
+    var grows = s.daughters.map(function (d, i) {
+      return [
+        cell([para([run((i + 1) + '-', { size: 24 })], { after: 0 })], gw[0]),
+        cell([para([run(d.name || ' ', { size: 22, bold: false })], { after: 0 })], gw[1], { borders: { top: none, left: none, right: none, bottom: dotted } }),
+        cell([para([run('من مواليد', { size: 22 })], { center: true, after: 0 })], gw[2]),
+        cell([para([run(fmt(d.dob) || ' ', { size: 22, bold: false })], { after: 0 })], gw[3], { borders: { top: none, left: none, right: none, bottom: dotted } })
+      ];
+    });
+    p2.push(grid(grows, gw, false, [620]));
+    p2.push(para([run(NOTE2A, { size: 20 })], { before: 420, after: 0 }));
+    p2.push(para([], { before: 4200, after: 0 }));
+    p2.push(grid([[
+      cell([para([], { after: 0 })], 7000),
+      cell([para([run('توقيع الموظف', { size: 22 })], { after: 60 }), para([run(dateTxt, { size: 22 })], { after: 0 })], 3206)
+    ]], [7000, 3206], false));
+    p2.push(para([run(NOTE2B, { size: 22, underline: true })], { before: 700, after: 0 }));
+
+    function page(style) {
+      var side = { style: style, size: style === BorderStyle.DOUBLE ? 6 : 8, color: '000000', space: 24 };
+      return {
+        size: { width: 11906, height: 16838 },
+        margin: { top: 1100, bottom: 1000, left: 850, right: 850 },
+        borders: {
+          pageBorders: { display: D.PageBorderDisplay.ALL_PAGES, offsetFrom: D.PageBorderOffsetFrom.PAGE },
+          pageBorderTop: side, pageBorderBottom: side, pageBorderLeft: side, pageBorderRight: side
+        }
+      };
+    }
+    return new D.Document({
+      creator: TITLE1, title: TITLE1,
+      styles: { default: { document: { run: { font: FONT, size: 22, sizeComplexScript: 22 } } } },
+      sections: [
+        { properties: { page: page(BorderStyle.DOUBLE) }, children: p1 },
+        { properties: { page: page(BorderStyle.DOUBLE) }, children: p2 }
+      ]
+    });
+  }
+
+  root.FormCore = {
+    blankState: blankState, emptyChild: emptyChild, emptyDaughter: emptyDaughter,
+    sheetsHTML: sheetsHTML, ar: ar, buildDocx: buildDocx, childrenCount: childrenCount,
+    MAX_CHILDREN: MAX_CHILDREN, MAX_DAUGHTERS: MAX_DAUGHTERS
+  };
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(function () {
+  var C = window.FormCore; var A = C.ar;
+  var KEY = 'afs-form-v1';
+  var $ = function (id) { return document.getElementById(id); };
+
+  function merge(o) {
+    var b = C.blankState(), k;
+    for (k in b) { if (k !== 'children' && k !== 'daughters' && typeof o[k] === 'string') b[k] = o[k]; }
+    if (Array.isArray(o.children) && o.children.length) b.children = o.children.slice(0, C.MAX_CHILDREN).map(function (c) { return Object.assign(C.emptyChild(), c); });
+    if (Array.isArray(o.daughters) && o.daughters.length) b.daughters = o.daughters.slice(0, C.MAX_DAUGHTERS).map(function (c) { return Object.assign(C.emptyDaughter(), c); });
+    return b;
+  }
+  function load() {
+    try { var r = localStorage.getItem(KEY); if (r) return merge(JSON.parse(r)); } catch (e) {}
+    return C.blankState();
+  }
+  var S = load();
+  var saveT;
+  function save() { clearTimeout(saveT); saveT = setTimeout(function () { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }, 250); }
+
+  function say(msg, err) { var s = $('status'); s.textContent = msg; s.className = 'status' + (err ? ' err' : ''); }
+
+  /* flat fields */
+  function syncFlat() {
+    document.querySelectorAll('[data-k]').forEach(function (el) { el.value = S[el.dataset.k] || ''; });
+    var r = document.querySelector('input[name="marital"][value="' + S.marital + '"]');
+    document.querySelectorAll('input[name="marital"]').forEach(function (x) { x.checked = false; });
+    if (r) r.checked = true;
+    showMarital();
+    autoCount();
+  }
+  function showMarital() {
+    document.querySelectorAll('.radio').forEach(function (d) { d.classList.toggle('on', d.dataset.opt === S.marital); });
+    document.querySelectorAll('[data-dw]').forEach(function (d) { d.hidden = d.dataset.dw !== S.marital; });
+  }
+  function autoCount() { $('childrenCount').placeholder = 'تلقائي: ' + A(C.childrenCount(Object.assign({}, S, { childrenCount: '' })) || '0'); }
+
+  document.addEventListener('input', function (e) {
+    var t = e.target;
+    if (t.dataset && t.dataset.k) { S[t.dataset.k] = t.value; save(); autoCount(); }
+    else if (t.dataset && t.dataset.list) {
+      S[t.dataset.list][+t.dataset.i][t.dataset.f] = t.value; save(); autoCount();
+    }
+  });
+  document.querySelectorAll('input[name="marital"]').forEach(function (r) {
+    r.addEventListener('change', function () { S.marital = r.value; showMarital(); save(); });
+  });
+
+  /* dynamic lists */
+  function kidHTML(c, i) {
+    return '<div class="kid" role="group" aria-label="الطفل ' + A(i + 1) + '"><div class="kid-n">' + A(i + 1) + '</div><div class="kid-f">' +
+      '<label class="f wide" for="ch' + i + '-name">الاسم الثلاثي<input id="ch' + i + '-name" type="text" autocomplete="off" data-list="children" data-i="' + i + '" data-f="name"></label>' +
+      '<label class="f" for="ch' + i + '-dob">تاريخ الولادة<input id="ch' + i + '-dob" type="date" data-list="children" data-i="' + i + '" data-f="dob"></label>' +
+      '<label class="f" for="ch' + i + '-g">الجنس<select id="ch' + i + '-g" data-list="children" data-i="' + i + '" data-f="gender"><option value="">—</option><option>ذكر</option><option>أنثى</option></select></label>' +
+      '<label class="f wide" for="ch' + i + '-n">الملاحظات<input id="ch' + i + '-n" type="text" autocomplete="off" data-list="children" data-i="' + i + '" data-f="notes"></label>' +
+      '</div><button type="button" class="ghost kid-x" data-del="children" data-i="' + i + '">حذف الطفل ' + A(i + 1) + '</button></div>';
+  }
+  function girlHTML(c, i) {
+    return '<div class="kid" role="group" aria-label="الابنة ' + A(i + 1) + '"><div class="kid-n">' + A(i + 1) + '</div><div class="kid-f">' +
+      '<label class="f wide" for="dg' + i + '-name">الاسم<input id="dg' + i + '-name" type="text" autocomplete="off" data-list="daughters" data-i="' + i + '" data-f="name"></label>' +
+      '<label class="f" for="dg' + i + '-dob">من مواليد<input id="dg' + i + '-dob" type="text" placeholder="مثال: ٢٠١١/٥/٣" autocomplete="off" data-list="daughters" data-i="' + i + '" data-f="dob"></label>' +
+      '</div><button type="button" class="ghost kid-x" data-del="daughters" data-i="' + i + '">حذف الابنة ' + A(i + 1) + '</button></div>';
+  }
+  function fillList(host, list) {
+    host.querySelectorAll('[data-list]').forEach(function (el) { el.value = S[list][+el.dataset.i][el.dataset.f] || ''; });
+  }
+  function renderKids() {
+    $('kids').innerHTML = S.children.map(kidHTML).join(''); fillList($('kids'), 'children');
+    $('addKid').disabled = S.children.length >= C.MAX_CHILDREN;
+    $('addKid').textContent = S.children.length >= C.MAX_CHILDREN ? 'وصلت إلى الحد الأقصى (' + A(C.MAX_CHILDREN) + ' أطفال)' : '+ إضافة طفل';
+  }
+  function renderGirls() {
+    $('girls').innerHTML = S.daughters.map(girlHTML).join(''); fillList($('girls'), 'daughters');
+    $('addGirl').disabled = S.daughters.length >= C.MAX_DAUGHTERS;
+    $('addGirl').textContent = S.daughters.length >= C.MAX_DAUGHTERS ? 'وصلت إلى الحد الأقصى (' + A(C.MAX_DAUGHTERS) + ')' : '+ إضافة ابنة';
+  }
+  $('addKid').addEventListener('click', function () {
+    if (S.children.length < C.MAX_CHILDREN) { S.children.push(C.emptyChild()); renderKids(); save(); autoCount(); var n = $('ch' + (S.children.length - 1) + '-name'); if (n) n.focus(); }
+  });
+  $('addGirl').addEventListener('click', function () {
+    if (S.daughters.length < C.MAX_DAUGHTERS) { S.daughters.push(C.emptyDaughter()); renderGirls(); save(); var n = $('dg' + (S.daughters.length - 1) + '-name'); if (n) n.focus(); }
+  });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-del]'); if (!b) return;
+    var list = b.dataset.del, i = +b.dataset.i;
+    if (S[list].length > 1) S[list].splice(i, 1); else S[list][0] = list === 'children' ? C.emptyChild() : C.emptyDaughter();
+    if (list === 'children') renderKids(); else renderGirls();
+    save(); autoCount();
+  });
+
+  /* clear all with in-page confirmation */
+  var clearT;
+  $('clearBtn').addEventListener('click', function () {
+    var b = $('clearBtn');
+    if (!b.classList.contains('confirm')) {
+      b.classList.add('confirm'); b.textContent = 'اضغط مرة أخرى للتأكيد';
+      clearT = setTimeout(function () { b.classList.remove('confirm'); b.textContent = 'مسح كل الحقول'; }, 4000);
+      return;
+    }
+    clearTimeout(clearT); b.classList.remove('confirm'); b.textContent = 'مسح كل الحقول';
+    S = C.blankState(); syncFlat(); renderKids(); renderGirls(); save(); say('تم مسح الحقول.');
+  });
+
+  /* tabs and preview */
+  function fitPreview() {
+    var wrap = $('pvWrap'), inner = $('pvIn');
+    var k = Math.min(1, wrap.clientWidth / 794);
+    inner.style.transform = 'scale(' + k + ')';
+    wrap.style.height = Math.ceil((1123 * 2 + 24) * k) + 'px';
+  }
+  function showTab(name) {
+    var prev = name === 'prev';
+    $('panel-fill').style.display = prev ? 'none' : 'flex';
+    $('panel-prev').hidden = !prev;
+    $('tab-fill').setAttribute('aria-selected', String(!prev));
+    $('tab-prev').setAttribute('aria-selected', String(prev));
+    if (prev) { $('pvIn').innerHTML = C.sheetsHTML(S); fitPreview(); }
+  }
+  $('tab-fill').addEventListener('click', function () { showTab('fill'); });
+  $('tab-prev').addEventListener('click', function () { showTab('prev'); });
+  window.addEventListener('resize', function () { if (!$('panel-prev').hidden) fitPreview(); });
+
+  /* export */
+  var dl = null;
+  function setBusy(b) { $('pdfBtn').disabled = b; $('docxBtn').disabled = b; }
+  /* save through the Claude downloads capability when it works, else a plain browser download */
+  async function saveFile(filename, blob) {
+    if (dl) {
+      try { await dl.save({ filename: filename, data: blob }); return; }
+      catch (e) { if (e && e.code === 'declined') throw e; }
+    }
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename; a.style.display = 'none';
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { a.remove(); URL.revokeObjectURL(url); }, 10000);
+  }
+  function baseName() {
+    var n = String(S.companyNo || '').trim().replace(/[\\\/:*?"<>|\s]+/g, '_');
+    return 'استمارة_الأعباء_العائلية' + (n ? '_' + n : '');
+  }
+  function fail(e) {
+    if (e && e.code === 'declined') say('أُلغي الحفظ.');
+    else say('تعذر إكمال التصدير' + (e && e.message ? ': ' + e.message : '.'), true);
+  }
+  async function makePDF() {
+    if (!window.html2canvas || !window.jspdf) throw new Error('مكتبة PDF لم تُحمّل، تأكد من الاتصال ثم أعد المحاولة.');
+    var host = document.createElement('div'); host.className = 'export-host'; host.innerHTML = C.sheetsHTML(S);
+    document.body.appendChild(host);
+    try {
+      try { await document.fonts.ready; } catch (e) {}
+      var pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+      var pages = host.querySelectorAll('.sheet');
+      for (var i = 0; i < pages.length; i++) {
+        var cv = await window.html2canvas(pages[i], { scale: 2, backgroundColor: '#ffffff', logging: false });
+        if (i) pdf.addPage();
+        pdf.addImage(cv.toDataURL('image/jpeg', 0.93), 'JPEG', 0, 0, 210, 297);
+      }
+      return pdf.output('blob');
+    } finally { host.remove(); }
+  }
+  $('pdfBtn').addEventListener('click', async function () {
+    setBusy(true); say('جارٍ إنشاء ملف PDF…');
+    try { var blob = await makePDF(); await saveFile(baseName() + '.pdf', blob); say('تم حفظ ملف PDF.'); }
+    catch (e) { fail(e); } finally { setBusy(false); }
+  });
+  /* load the Word library on demand, trying several CDNs in turn */
+  var DOCX_URLS = [
+    'https://cdn.jsdelivr.net/npm/docx@9.8.1/dist/index.iife.js',
+    'https://unpkg.com/docx@9.8.1/dist/index.iife.js',
+    'https://cdn.jsdelivr.net/npm/docx@9.5.0/dist/index.iife.js'
+  ];
+  function loadScript(url) {
+    return new Promise(function (res, rej) {
+      var s = document.createElement('script');
+      s.src = url; s.onload = res; s.onerror = function () { rej(new Error('load failed')); };
+      document.head.appendChild(s);
+    });
+  }
+  async function ensureDocx() {
+    if (window.docx && window.docx.Packer) return;
+    for (var i = 0; i < DOCX_URLS.length; i++) {
+      try { await loadScript(DOCX_URLS[i]); if (window.docx && window.docx.Packer) return; } catch (e) {}
+    }
+    throw new Error('مكتبة Word لم تُحمّل، تأكد من الاتصال ثم أعد المحاولة.');
+  }
+  $('docxBtn').addEventListener('click', async function () {
+    setBusy(true); say('جارٍ إنشاء ملف Word…');
+    try {
+      await ensureDocx();
+      var blob = await window.docx.Packer.toBlob(C.buildDocx(S, window.docx));
+      await saveFile(baseName() + '.docx', blob); say('تم حفظ ملف Word.');
+    } catch (e) { fail(e); } finally { setBusy(false); }
+  });
+
+  syncFlat(); renderKids(); renderGirls(); setBusy(false);
+  var cl = window.claude;
+  if (cl && cl.use) {
+    cl.use('downloads').then(function (d) {
+      dl = d;
+    }, function () {});
+  }
+})();
+</script>
+
+</body></html>
