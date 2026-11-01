@@ -60,11 +60,19 @@ section.blk { background: var(--surface); border: 1px solid var(--line); border-
 section.blk h2 { margin: 0; font-size: 17px; font-weight: 600; }
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
 .f { display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; color: var(--muted); font-weight: 500; min-width: 0; }
-input[type="text"], input[type="date"], select {
+input[type="text"], input[type="date"], select, textarea {
   width: 100%; min-width: 0; font: inherit; font-size: 15px; color: var(--ink); background: var(--field);
   border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; min-height: 40px;
 }
 .hint { font-size: 13px; color: var(--muted); margin: 0; }
+.dp { display: flex; gap: 6px; }
+.chk { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.chk input { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; }
+.hint .yr-in { display: inline-block; width: 110px; min-height: 32px; padding: 2px 8px; text-align: center; direction: ltr; vertical-align: middle; }
+.dp select { flex: 1; min-width: 0; padding: 8px 6px; }
+.dp .dy { flex: 1.2; }
+.radio .dwrap { min-width: 280px; }
+.radio .dwrap .dp { max-width: 360px; }
 .radios { display: flex; flex-direction: column; gap: 8px; }
 .radio { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; }
 .radio input[type="radio"] { width: 18px; height: 18px; accent-color: var(--accent); margin: 0; }
@@ -78,6 +86,11 @@ input[type="text"], input[type="date"], select {
 .kid-f .wide { grid-column: span 2; }
 @media (max-width: 520px) { .kid-f .wide { grid-column: auto; } }
 .kid-x { justify-self: start; }
+.locked { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.locked li { position: relative; padding: 10px 40px 10px 12px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; line-height: 2.4; font-size: 14.5px; user-select: none; }
+.locked .ln { position: absolute; right: 12px; top: 10px; color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; }
+.locked .lt { font-weight: 600; margin: 0 0 4px; }
+.locked input.nn { display: inline-block; flex: none; width: calc(var(--w, 4) * 1ch + 22px); min-width: 0; max-width: 100%; min-height: 30px; padding: 0 6px; margin: 0 2px; text-align: center; direction: ltr; border: 1.5px solid var(--accent); background: var(--surface); border-radius: 5px; font-weight: 600; vertical-align: middle; user-select: text; }
 .list { display: flex; flex-direction: column; gap: 10px; }
 .add { align-self: flex-start; background: var(--accent-soft); color: var(--accent); border: 1px dashed var(--accent); border-radius: 6px; padding: 8px 14px; font-weight: 500; }
 .add:disabled { opacity: .5; cursor: not-allowed; }
@@ -111,23 +124,40 @@ input[type="text"], input[type="date"], select {
 .frame2 { position: absolute; inset: 34px 36px; border: 4px double #000; pointer-events: none; }
 .sh-head { text-align: center; }
 .sh-head div { line-height: 26px; }
-.h1 { font-size: 19px; } .h2 { font-size: 18px; } .h3 { font-size: 17px; }
+.h1 { font-size: 19px; } .h1 .ul { display: inline-block; line-height: 24px; padding-bottom: 5px; border-bottom: 2px solid #000; } .h2 { font-size: 18px; } .h3 { font-size: 17px; }
 .rrow { display: flex; margin-top: 4px; }
 .rrow.gap { gap: 26px; }
-.rf { flex: 1; display: flex; align-items: flex-end; gap: 8px; min-width: 0; font-size: 14.5px; }
+.idb { display: flex; justify-content: space-between; gap: 18px; margin-top: 10px; padding: 0 1%; }
+.idb + .idb { margin-top: 6px; }
+.qbox { border: 1px solid #000; margin-top: 10px; }
+.qbox .rrow { margin: 0; padding: 2px 8px; border-bottom: 1px solid #000; }
+.qbox .rrow:last-child { border-bottom: 0; }
+.qbox .dv { border-bottom: 0; }
+.qbox .qe { height: 22px; padding: 0; }
+.qbox .q3 { flex: 0 0 36%; display: flex; min-width: 0; }
+.idr { width: 58%; display: flex; min-width: 0; }
+.idl { width: 38%; display: flex; min-width: 0; }
+.idb.r2 .idr { width: 46%; }
+.idb.r2 .idl { width: 50%; }
+.idb .dv { flex: none; max-width: 100%; white-space: nowrap; overflow: hidden; }
+.idb .dv:empty { min-width: 110px; }
+.rf { flex: 1; display: flex; align-items: baseline; gap: 8px; min-width: 0; font-size: 14.5px; }
 .rf b { white-space: nowrap; }
-.dv { flex: 1; min-width: 0; min-height: 19px; border-bottom: 1px dotted #000; padding: 0 4px; font-weight: 400; overflow-wrap: anywhere; font-size: 14px; }
-.mrow { display: flex; gap: 13px; margin-top: 7px; margin-bottom: 4px; }
+.dv { flex: 1; min-width: 0; min-height: 19px; border-bottom: 1px dotted #000; padding: 0 4px 5px; line-height: 1.5; font-weight: 400; overflow-wrap: anywhere; font-size: 14px; }
+.mrow { display: flex; gap: 15px; margin-top: 7px; margin-bottom: 4px; }
 .mg { flex: 1; border-collapse: collapse; table-layout: fixed; }
+.mg:nth-child(1) { flex: 1.3; } .mg:nth-child(3) { flex: 1.1; }
+.mg th:first-child, .mg td:first-child { width: 44%; }
 .mg th, .mg td { border: 1px solid #000; text-align: center; font-size: 13px; padding: 0 2px; height: 26px; }
-.mg td { height: 28px; font-weight: 400; font-size: 14px; }
+.mg td { height: 40px; font-weight: 400; font-size: 14px; }
 .dt { direction: ltr; unicode-bidi: isolate; }
 .sh-t { width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; }
-.sh-t th, .sh-t td { border: 1px solid #000; height: 22px; padding: 0 4px; text-align: center; font-size: 13px; overflow: hidden; font-weight: 400; }
+.sh-t th, .sh-t td { border: 1px solid #000; height: 24px; padding: 0 4px; text-align: center; font-size: 13px; overflow: hidden; font-weight: 400; }
 .sh-t th { font-weight: 700; } .sh-t td:first-child { font-weight: 700; }
-.sh-t .c1 { width: 5.6%; } .sh-t .c2 { width: 40%; } .sh-t .c3 { width: 18%; } .sh-t .c4 { width: 11.7%; }
+.sh-t .c1 { width: 7.4%; } .sh-t .c2 { width: 26%; } .sh-t .c3 { width: 19%; } .sh-t .c4 { width: 10%; }
 .sh-notes { margin-top: 8px; }
-.nt { font-size: 13px; text-decoration: underline; margin-bottom: 6px; }
+.nt { font-size: 13px; display: table; border-bottom: 1.5px solid #000; padding-bottom: 3px; margin-bottom: 9px; }
+.sheet u { text-decoration: none; border-bottom: 1.5px solid #000; padding-bottom: 2px; }
 .sh-notes ol { margin: 0; padding-right: 20px; list-style: none; font-size: 12px; line-height: 17px; }
 .sh-notes li { margin-bottom: 3px; position: relative; }
 .sh-notes .no { position: absolute; right: -20px; }
@@ -135,23 +165,23 @@ input[type="text"], input[type="date"], select {
 .fo-r { padding-right: 20px; }
 .fo-l { width: 150px; text-align: center; }
 .next { position: absolute; left: 0; right: 0; bottom: 44px; text-align: center; font-size: 13px; }
-.t2 { text-align: center; font-size: 20px; text-decoration: underline; margin-top: 8px; }
-.to { margin-top: 36px; }
-.pledge { text-align: justify; font-size: 15.5px; line-height: 30px; margin: 26px 0 0; }
-.girls { margin-top: 28px; }
-.gr { display: flex; align-items: flex-end; gap: 10px; height: 38px; font-size: 14px; }
+.t2 { font-size: 20px; display: table; margin: 80px auto 0; border-bottom: 1.5px solid #000; padding-bottom: 4px; }
+.pledge { text-align: justify; font-size: 15.5px; line-height: 28px; margin: 34px 0 0; }
+.pledge .pn { display: inline-block; min-width: 190px; border-bottom: 1px dotted #000; font-weight: 400; text-align: center; padding: 0 6px; line-height: 20px; }
+.girls { margin-top: 30px; }
+.gr { display: flex; align-items: flex-start; gap: 73px; height: 34px; font-size: 14px; }
+.gnm { flex: 0 0 268px; display: flex; align-items: flex-end; gap: 8px; height: 22px; }
+.gdt { flex: 1; display: flex; align-items: flex-end; gap: 6px; height: 22px; margin-top: 13px; padding-left: 44px; min-width: 0; }
 .gn { width: 26px; }
-.gr .gd { flex: 0 0 150px; }
-.n2a { margin-top: 34px; font-size: 12.5px; }
-.fo2 { position: absolute; left: 60px; width: 140px; bottom: 91px; text-align: right; font-size: 14px; line-height: 26px; }
-.n2b { position: absolute; right: 63px; bottom: 46px; font-size: 13.5px; text-decoration: underline; }
+.n2a { margin-top: 80px; font-size: 13px; }
+.fo2 { position: absolute; left: 45px; width: 160px; top: 614px; text-align: right; font-size: 14px; line-height: 40px; }
+.n2b { position: absolute; right: 63px; bottom: 138px; font-size: 21px; }
 </style>
 
 <div class="wrap">
   <div class="top">
     <div>
       <h1>استمارة الأعباء العائلية</h1>
-      <p>شركة نفط الشمال · الجرد السنوي ٢٠٢٧/٢٠٢٦ · مع استمارة تعهد بنات المنتسبين</p>
     </div>
     <button type="button" class="ghost" id="clearBtn">مسح كل الحقول</button>
   </div>
@@ -164,6 +194,7 @@ input[type="text"], input[type="date"], select {
   <div id="panel-fill" role="tabpanel" aria-labelledby="tab-fill" style="display:flex;flex-direction:column;gap:20px">
     <section class="blk">
       <h2>بيانات الموظف</h2>
+      <p class="hint">شركة نفط الشمال · الجرد السنوي <input id="invYear" class="yr-in" data-k="invYear" type="text" inputmode="numeric" autocomplete="off" aria-label="سنة الجرد" placeholder="2027/2026"> · مع استمارة تعهد بنات المنتسبين</p>
       <div class="grid">
         <label class="f" for="empName">الاسم<input id="empName" data-k="empName" type="text" autocomplete="off"></label>
         <label class="f" for="companyNo">رقم الشركة<input id="companyNo" data-k="companyNo" type="text" inputmode="numeric" autocomplete="off"></label>
@@ -197,6 +228,8 @@ input[type="text"], input[type="date"], select {
 
     <section class="blk">
       <h2>الأطفال</h2>
+      <label class="chk" for="autoFather"><input type="checkbox" id="autoFather" checked>إكمال اسم الأب والجد وأب الجد تلقائياً من اسم الموظف</label>
+      <p class="hint">اكتب اسم الطفل الأول فقط (مثل: محمد)، فيُطبع معه أسماء الأب والجد وأب الجد (الأسماء الثلاثة الأولى) من اسم الموظف. إذا كتبت أكثر من كلمة يُطبع الاسم كما كتبته.</p>
       <div class="grid">
         <label class="f" for="childrenCount">عدد الأطفال رقماً<input id="childrenCount" data-k="childrenCount" type="text" inputmode="numeric" autocomplete="off"></label>
       </div>
@@ -210,6 +243,13 @@ input[type="text"], input[type="date"], select {
       <p class="hint">أتعهد بأن بناتي المبينة أسماؤهن وتوليداتهن غير معينات ولا متزوجات ولا مطلقات ولا أرامل. تُملأ الاستمارة حتى لو لم يكن هناك أي متغيرات.</p>
       <div class="list" id="girls"></div>
       <button type="button" class="add" id="addGirl">+ إضافة ابنة</button>
+    </section>
+
+    <section class="blk">
+      <h2>المستمسكات المطلوبة والمشمولين بملء الاستمارة</h2>
+      <p class="hint">النص ثابت ولا يمكن تعديله. يمكنك تغيير التواريخ والأرقام فقط (الحقول المحاطة بإطار).</p>
+      <ol class="locked" id="notesBox"></ol>
+      <div><button type="button" class="ghost" id="restoreNotes">استعادة التواريخ والأرقام الأصلية</button></div>
     </section>
 
     <section class="blk">
@@ -249,23 +289,42 @@ input[type="text"], input[type="date"], select {
   'use strict';
 
   var NOTES1 = [
-    'الموظفون والموظفات الذين أزواجهم معيلون خارج الشركة جلب كتاب تأييد بعدم تقاضي الزوجية والأطفال يرفق مع الاستمارة حتى إذا كان الأطفال قاصرين .',
-    'الموظفات اللاتي أزواجهم من الكسبة ، جلب مضبطة تأييد صادرة من المختار يثبت أن الزوج ( كاسب ) .',
+    'الموظفون والموظفات الذين ازواجهم [[موظفون]] خارج الشركة جلب كتاب تأييد بعدم تقاضي الزوجية والاطفال يرفق مع الاستمارة حتى اذا كان الأطفال قاصرين.',
+    'الموظفات اللاتي ازواجهن من [[الكسبة]] ، جلب مضبطة تأييد صادرة من المختار يثبت أن الزوج ( كاسب ) .',
     'الموظفون والموظفات الذين يتقاضون مخصصات الزوجية من شركتنا .',
-    'الطلاب الذكور الذين تنحصر أعمارهم ما بين ( 2004 - 2009 ) جلب كتاب تأييد استمرار بالدراسة للعام ( 2026 - 2027 ) . وسوف يتم ايقاف تولد 2003 ببلوغه الحد الأعلى 24 سنة .',
+    'الطلاب الذكور الذين تنحصر اعمارهم ما بين [[(2009/2004)]] جلب كتاب تأييد استمرار بالدراسة لعام (2027-2026)، وسوف يتم ايقاف تولد 2003 لبلوغه الحد الأعلى 24 سنة .',
     'الإناث من مواليد 2009 فما دون الاكتفاء بالتعهد الخطي في ظهر الاستمارة مع نسخة من هوية الأحوال المدنية او البطاقة الوطنية .',
-    'في حال وجود أي تغيير في الحالة الاجتماعية ( زواج - طلاق - وفاة ) إعلام قسم الموارد البشرية .',
-    'على الموظف تدقيق مخصصات الزوجية والأطفال في قائمة راتبه شهرياً وفي حالة حدوث أي خطأ مراجعة قسم الموارد البشرية فوراً لتلافي الخطأ إن وجد .',
+    'في حال وجود أي تغيير في الحالة الاجتماعية (زواج- طلاق– وفاة) اعلام قسم الموارد البشرية .',
+    'على الموظف تدقيق مخصصات الزوجية والاطفال في قائمة راتبه شهريا وفي حالة حدوث أي خطأ مراجعة قسم الموارد البشرية فورا لتلافي الخطأ ان وجد .',
     'تملأ الاستمارة من قبل جميع الموظفين .'
   ];
   var NOTES1_TITLE = 'المستمسكات المطلوبة والمشمولين بملء الاستمارة :';
+  function childFull(c, s) {
+    var n = String(c.name || '').trim();
+    if (!n || (s && s.autoFather === '0')) return n;
+    if (n.split(/\s+/).length > 1) return n;
+    var f = String((s && s.empName) || '').trim().split(/\s+/).slice(0, 3).join(' ');
+    return f ? n + ' ' + f : n;
+  }
+  function defaultNums() { var a = []; NOTES1.forEach(function (n) { (n.match(/\d+/g) || []).forEach(function (d) { a.push(d); }); }); return a; }
+  function numsOf(s) {
+    var d = defaultNums(), a;
+    try { a = JSON.parse(s.notesNums || '[]'); } catch (e) { a = []; }
+    if (!Array.isArray(a) || a.length !== d.length) return d;
+    return a.map(function (x, i) { x = String(x == null ? '' : x).replace(/[^0-9]/g, ''); return x || d[i]; });
+  }
+  function notesList(s) {
+    var nums = numsOf(s), k = 0;
+    return NOTES1.map(function (n) { return n.replace(/\d+/g, function () { return nums[k++]; }); });
+  }
   var TITLE_ORG = 'شركة نفط الشمال / شركة عامة';
   var TITLE1 = 'استمارة الأعباء العائلية';
   var TITLE_YEAR = 'الجرد السنوي لسنة 2027/2026';
-  var TITLE2 = 'استمارة تعهد لبنات المنتسبين';
-  var PLEDGE = 'أتعهد بأن بناتي المبينة أسماؤهن وتوليداتهن في أدناه غير (معينات ولا متزوجات ولا مطلقات ولا أرامل) وأتحمل المسؤولية إذا ظهر خلاف ذلك ولأجله وقعت.';
+  function yearTitle(s) { return 'الجرد السنوي لسنة ' + (String((s && s.invYear) || '').trim() || '2027/2026'); }
+  var TITLE2 = 'إستمارة تعهد لبنات المنتسبين';
+  var PLEDGE = 'أتعهد بأن بناتي المبينة أسماؤهن وتولداتهن في أدناه غير [[(متعينات,ولا متزوجات,ولا مطلقات,ولا أرامل)]] وأتحمل المسؤولية إذا ظهر خلاف ذلك ولأجله وقعت.';
   var NOTE2A = 'ملاحظة/ ترفق صورة ملونة من البطاقة الموحدة لكل واحدة من المذكورات أعلاه.';
-  var NOTE2B = 'ملاحظة : تملأ الاستمارة حتى لو لم يكن هناك أي متغيرات';
+  var NOTE2B = '[[ملاحظة]] : تملأ الاستمارة حتى لو لم يكن هناك أي متغيرات';
   var NEXT = 'يتبع رجاءً ←';
 
   var MAX_CHILDREN = 8;
@@ -291,7 +350,10 @@ input[type="text"], input[type="date"], select {
       spouseName: '', spouseJob: '', spouseWork: '',
       childrenCount: '',
       children: kids, daughters: girls,
-      signDate: ''
+      signDate: '',
+      invYear: '2027/2026',
+      notesNums: JSON.stringify(defaultNums()),
+      autoFather: '1'
     };
   }
 
@@ -320,7 +382,8 @@ input[type="text"], input[type="date"], select {
       return '<div class="rf"' + (flex ? ' style="flex:' + flex + '"' : '') + '><b>' + esc(label) + '</b><span class="dv">' + esc(val) + '</span></div>';
     }
     var sd = signDateText(s);
-    var dateLine = sd ? 'التاريخ ' + esc(sd) : 'التاريخ';
+    var dateLine = sd ? 'التاريخ/ ' + esc(sd) : 'التاريخ/';
+    var dateLine1 = sd ? 'التأريخ/ ' + esc(sd) : 'التأريخ/';
 
     var groups = maritalGroups(s).map(function (g) {
       var on = s.marital === g.key;
@@ -329,39 +392,42 @@ input[type="text"], input[type="date"], select {
     }).join('');
 
     var rows = childRows(s).map(function (c, i) {
-      return '<tr><td>' + ar(i + 1) + '</td><td>' + esc(c.name) + '</td><td class="dt">' + esc(fmt(c.dob)) + '</td><td>' + esc(c.gender) + '</td><td>' + esc(c.notes) + '</td></tr>';
+      return '<tr><td>' + ar(i + 1) + '</td><td>' + esc(childFull(c, s)) + '</td><td class="dt">' + esc(fmt(c.dob)) + '</td><td>' + esc(c.gender) + '</td><td>' + esc(c.notes) + '</td></tr>';
     }).join('');
 
-    var notes1 = NOTES1.map(function (n, i) { return '<li><span class="no">' + ar(i + 1) + '.</span>' + esc(n) + '</li>'; }).join('');
+    var notes1 = notesList(s).map(function (n, i) { return '<li><span class="no">' + ar(i + 1) + '-</span>' + esc(n).replace(/\[\[/g, '<u>').replace(/\]\]/g, '</u>') + '</li>'; }).join('');
 
     var p1 =
       '<div class="sheet sheet-1"><div class="frame1"></div>' +
-        '<div class="sh-head"><div class="h1">' + esc(TITLE_ORG) + '</div><div class="h2">' + esc(TITLE1) + '</div><div class="h3">' + esc(TITLE_YEAR) + '</div></div>' +
-        '<div class="rrow gap">' + rf('الاسم:', s.empName) + rf('رقم الشركة:', s.companyNo) + '</div>' +
-        '<div class="rrow gap">' + rf('القسم:', s.dept) + rf('العنوان الوظيفي:', s.jobTitle) + '</div>' +
+        '<div class="sh-head"><div class="h1"><span class="ul">' + esc(TITLE_ORG) + '</span></div><div class="h2">' + esc(TITLE1) + '</div><div class="h3">' + esc(yearTitle(s)) + '</div></div>' +
+        '<div class="idb r1"><div class="idr">' + rf('الاسم:', s.empName) + '</div><div class="idl">' + rf('رقم الشركة:', s.companyNo) + '</div></div>' +
+        '<div class="idb r2"><div class="idr">' + rf('القسم:', s.dept) + '</div><div class="idl">' + rf('العنوان الوظيفي:', s.jobTitle) + '</div></div>' +
         '<div class="mrow">' + groups + '</div>' +
-        '<div class="rrow">' + rf('٢ - اسم الزوج / الزوجة ؟', s.spouseName) + '</div>' +
-        '<div class="rrow">' + rf('٣ - مهنة الزوج / الزوجة ؟', s.spouseJob) + '</div>' +
-        '<div class="rrow gap">' + rf('٤ - عدد الأطفال رقماً:', childrenCount(s), '0.8') + rf('مكان العمل الزوج/الزوجة/', s.spouseWork, '1.2') + '</div>' +
+        '<div class="qbox">' +
+          '<div class="rrow qe"></div>' +
+          '<div class="rrow">' + rf('٢ - اسم الزوج / الزوجة ؟', s.spouseName) + '</div>' +
+          '<div class="rrow"><div class="q3">' + rf('٣ - مهنة الزوج / الزوجة ؟', s.spouseJob) + '</div><div class="q3">' + rf('مكان العمل الزوج/الزوجة/', s.spouseWork) + '</div></div>' +
+          '<div class="rrow">' + rf('٤ - عدد الأطفال رقماً:', childrenCount(s)) + '</div>' +
+        '</div>' +
         '<table class="sh-t"><thead><tr><th class="c1">ت</th><th class="c2">الاسم الثلاثي</th><th class="c3">تاريخ الولادة</th><th class="c4">الجنس</th><th class="c5">الملاحظات</th></tr></thead><tbody>' + rows + '</tbody></table>' +
         '<div class="sh-notes"><div class="nt">' + esc(NOTES1_TITLE) + '</div><ol>' + notes1 + '</ol></div>' +
-        '<div class="fo1"><div class="fo-r"><div>توقيع الموظف</div><div>' + dateLine + '</div></div><div class="fo-l"><div>توقيع المسؤول الإداري</div><div>ختم الدائرة</div></div></div>' +
+        '<div class="fo1"><div class="fo-r"><div>توقيع الموظف</div><div>' + dateLine1 + '</div></div><div class="fo-l"><div>توقيع المسؤول الإداري</div><div>ختم الدائرة</div></div></div>' +
         '<div class="next">' + esc(NEXT) + '</div>' +
       '</div>';
 
     var girls = s.daughters.map(function (d, i) {
-      return '<div class="gr"><span class="gn">' + ar(i + 1) + '-</span><span class="dv">' + esc(d.name) + '</span><b>من مواليد</b><span class="dv gd">' + esc(fmt(d.dob)) + '</span></div>';
+      return '<div class="gr"><div class="gnm"><span class="gn">' + ar(i + 1) + '-</span><span class="dv">' + esc(d.name) + '</span></div><div class="gdt"><b>من مواليد</b><span class="dv">' + esc(fmt(d.dob)) + '</span></div></div>';
     }).join('');
+    function mk(x) { return esc(x).replace(/\[\[/g, '<u>').replace(/\]\]/g, '</u>'); }
 
     var p2 =
       '<div class="sheet sheet-2"><div class="frame2"></div>' +
         '<div class="t2">' + esc(TITLE2) + '</div>' +
-        '<div class="rrow to">' + rf('إني الموظف', s.empName) + '</div>' +
-        '<p class="pledge">' + esc(PLEDGE) + '</p>' +
+        '<p class="pledge">إني الموظف <span class="pn">' + esc(s.empName) + '</span> ' + mk(PLEDGE) + '</p>' +
         '<div class="girls">' + girls + '</div>' +
         '<div class="n2a">' + esc(NOTE2A) + '</div>' +
         '<div class="fo2"><div>توقيع الموظف</div><div>' + dateLine + '</div></div>' +
-        '<div class="n2b">' + esc(NOTE2B) + '</div>' +
+        '<div class="n2b">' + mk(NOTE2B) + '</div>' +
       '</div>';
 
     return p1 + p2;
@@ -382,7 +448,7 @@ input[type="text"], input[type="date"], select {
       return new TextRun({
         text: ar(text), font: FONT, rightToLeft: true, size: size, sizeComplexScript: size,
         bold: o.bold !== false, boldComplexScript: o.bold !== false,
-        underline: o.underline ? {} : undefined
+        underline: o.underline ? (o.underline === 'dotted' ? { type: D.UnderlineType.DOTTED } : {}) : undefined
       });
     }
     function para(runs, o) {
@@ -408,6 +474,7 @@ input[type="text"], input[type="date"], select {
         width: { size: width, type: WidthType.DXA },
         borders: o.borders || noB,
         verticalAlign: VerticalAlign.CENTER,
+        columnSpan: o.span || 1,
         margins: { top: 40, bottom: 40, left: 80, right: 80 },
         children: children
       });
@@ -422,7 +489,7 @@ input[type="text"], input[type="date"], select {
         })
       });
     }
-    function lv(label, val, n) { return [run(label + ' ', { size: 22 }), run(dots(val, n), { bold: false, size: 22 })]; }
+    function lv(label, val, n) { var f = !!String(val).trim(); return [run(label + ' ', { size: 22 }), run(dots(val, n), { bold: false, size: 22, underline: f ? 'dotted' : false })]; }
     function two(a, b) {
       var w = Math.floor(W / 2);
       return grid([[cell([para(a, { after: 0 })], w), cell([para(b, { after: 0 })], w)]], [w, w], false);
@@ -432,7 +499,7 @@ input[type="text"], input[type="date"], select {
     var p1 = [];
     p1.push(para([run(TITLE_ORG, { size: 26 })], { center: true, after: 60 }));
     p1.push(para([run(TITLE1, { size: 26 })], { center: true, after: 60 }));
-    p1.push(para([run(TITLE_YEAR, { size: 26 })], { center: true, after: 160 }));
+    p1.push(para([run(yearTitle(s), { size: 26 })], { center: true, after: 160 }));
     p1.push(two(lv('الاسم:', s.empName, 26), lv('رقم الشركة:', s.companyNo, 20)));
     p1.push(two(lv('القسم:', s.dept, 26), lv('العنوان الوظيفي:', s.jobTitle, 20)));
     p1.push(para([], { after: 100 }));
@@ -453,19 +520,19 @@ input[type="text"], input[type="date"], select {
       rows: [new TableRow({ height: { value: 420, rule: HeightRule.ATLEAST }, children: mh }), new TableRow({ height: { value: 480, rule: HeightRule.ATLEAST }, children: mv })]
     }));
     p1.push(para([], { after: 120 }));
-    p1.push(para(lv('٢ - اسم الزوج / الزوجة ؟', s.spouseName, 60), { after: 120 }));
-    p1.push(para(lv('٣ - مهنة الزوج / الزوجة ؟', s.spouseJob, 60), { after: 120 }));
-    p1.push(grid([[
-      cell([para(lv('٤ - عدد الأطفال رقماً:', childrenCount(s), 14), { after: 0 })], 4400),
-      cell([para(lv('مكان العمل الزوج/الزوجة/', s.spouseWork, 28), { after: 0 })], 5806)
-    ]], [4400, 5806], false));
+    p1.push(grid([
+      [cell([para([run(' ', { size: 22 })], { after: 0 })], 3400, { borders: allB }), cell([para([], { after: 0 })], 3400, { borders: allB }), cell([para([], { after: 0 })], 3406, { borders: allB })],
+      [cell([para(lv('٢ - اسم الزوج / الزوجة ؟', s.spouseName, 50), { after: 0 })], 10206, { borders: allB, span: 3 })],
+      [cell([para(lv('٣ - مهنة الزوج / الزوجة ؟', s.spouseJob, 18), { after: 0 })], 3400, { borders: allB }), cell([para(lv('مكان العمل الزوج/الزوجة/', s.spouseWork, 18), { after: 0 })], 3400, { borders: allB }), cell([para([], { after: 0 })], 3406, { borders: allB })],
+      [cell([para(lv('٤ - عدد الأطفال رقماً:', childrenCount(s), 30), { after: 0 })], 10206, { borders: allB, span: 3 })]
+    ], [3400, 3400, 3406], true, [400]));
     p1.push(para([], { after: 120 }));
 
-    var cw = [570, 4030, 1840, 1190, 2576];
+    var cw = [755, 2650, 1940, 1020, 3841];
     var head = ['ت', 'الاسم الثلاثي', 'تاريخ الولادة', 'الجنس', 'الملاحظات'];
     var trows = [head.map(function (h, i) { return cell([para([run(h, { size: 20 })], { center: true, after: 0 })], cw[i], { borders: allB }); })];
     childRows(s).forEach(function (c, r) {
-      var vals = [ar(r + 1), c.name, fmt(c.dob), c.gender, c.notes];
+      var vals = [ar(r + 1), childFull(c, s), fmt(c.dob), c.gender, c.notes];
       trows.push(vals.map(function (v, i) {
         return cell([para([run(v, { size: 20, bold: i === 0 })], { center: true, after: 0 })], cw[i], { borders: allB });
       }));
@@ -473,13 +540,18 @@ input[type="text"], input[type="date"], select {
     p1.push(grid(trows, cw, true, [400]));
 
     p1.push(para([run(NOTES1_TITLE, { size: 19, underline: true })], { before: 200, after: 80 }));
-    NOTES1.forEach(function (n, i) { p1.push(para([run((i + 1) + '. ' + n, { size: 18 })], { after: 40 })); });
+    notesList(s).forEach(function (n, i) {
+      var parts = n.split(/\[\[|\]\]/), rs = [run((i + 1) + '- ', { size: 18 })];
+      parts.forEach(function (t, k) { if (t) rs.push(run(t, { size: 18, underline: k % 2 === 1 })); });
+      p1.push(para(rs, { after: 40 }));
+    });
 
     var sd = signDateText(s);
-    var dateTxt = 'التاريخ' + (sd ? ' ' + sd : '');
+    var dateTxt = 'التاريخ/' + (sd ? ' ' + sd : '');
+    var dateTxt1 = 'التأريخ/' + (sd ? ' ' + sd : '');
     p1.push(para([], { before: 300, after: 0 }));
     p1.push(grid([[
-      cell([para([run('توقيع الموظف', { size: 22 })], { after: 40 }), para([run(dateTxt, { size: 22 })], { after: 0 })], 5100),
+      cell([para([run('توقيع الموظف', { size: 22 })], { after: 40 }), para([run(dateTxt1, { size: 22 })], { after: 0 })], 5100),
       cell([para([run('توقيع المسؤول الإداري', { size: 22 })], { center: true, after: 40 }), para([run('ختم الدائرة', { size: 22 })], { center: true, after: 0 })], 5106)
     ]], [5100, 5106], false));
     p1.push(para([run(NEXT, { size: 22 })], { center: true, before: 160, after: 0 }));
@@ -487,8 +559,10 @@ input[type="text"], input[type="date"], select {
     /* page 2 */
     var p2 = [];
     p2.push(para([run(TITLE2, { size: 30, underline: true })], { center: true, before: 120, after: 360 }));
-    p2.push(para(lv('إني الموظف', s.empName, 60), { after: 300 }));
-    p2.push(new Paragraph({ bidirectional: true, alignment: AlignmentType.BOTH, spacing: { after: 360, line: 420 }, children: [run(PLEDGE, { size: 24 })] }));
+    function mkRuns(txt, size, big) { var rs = []; txt.split(/\[\[|\]\]/).forEach(function (x, k) { if (x) rs.push(run(x, { size: size, underline: k % 2 === 1 })); }); return rs; }
+    var nm = String(s.empName || '').trim();
+    var pr = [run('إني الموظف ', { size: 24 }), run(nm ? nm : new Array(41).join('.'), { size: 24, bold: false, underline: nm ? 'dotted' : false }), run(' ', { size: 24 })].concat(mkRuns(PLEDGE, 24));
+    p2.push(new Paragraph({ bidirectional: true, alignment: AlignmentType.BOTH, spacing: { after: 360, line: 420 }, children: pr }));
     var gw = [500, 5200, 1400, 3106];
     var grows = s.daughters.map(function (d, i) {
       return [
@@ -499,13 +573,13 @@ input[type="text"], input[type="date"], select {
       ];
     });
     p2.push(grid(grows, gw, false, [620]));
-    p2.push(para([run(NOTE2A, { size: 20 })], { before: 420, after: 0 }));
-    p2.push(para([], { before: 4200, after: 0 }));
+    p2.push(para([run(NOTE2A, { size: 20 })], { before: 1660, after: 0 }));
+    p2.push(para([], { before: 3500, after: 0 }));
     p2.push(grid([[
       cell([para([], { after: 0 })], 7000),
       cell([para([run('توقيع الموظف', { size: 22 })], { after: 60 }), para([run(dateTxt, { size: 22 })], { after: 0 })], 3206)
     ]], [7000, 3206], false));
-    p2.push(para([run(NOTE2B, { size: 22, underline: true })], { before: 700, after: 0 }));
+    p2.push(para(mkRuns(NOTE2B, 30), { before: 700, after: 0 }));
 
     function page(style) {
       var side = { style: style, size: style === BorderStyle.DOUBLE ? 6 : 8, color: '000000', space: 24 };
@@ -530,7 +604,7 @@ input[type="text"], input[type="date"], select {
 
   root.FormCore = {
     blankState: blankState, emptyChild: emptyChild, emptyDaughter: emptyDaughter,
-    sheetsHTML: sheetsHTML, ar: ar, buildDocx: buildDocx, childrenCount: childrenCount,
+    sheetsHTML: sheetsHTML, ar: ar, NOTES1: NOTES1, NOTES1_TITLE: NOTES1_TITLE, numsOf: numsOf, buildDocx: buildDocx, childrenCount: childrenCount,
     MAX_CHILDREN: MAX_CHILDREN, MAX_DAUGHTERS: MAX_DAUGHTERS
   };
 })(typeof window !== 'undefined' ? window : globalThis);
@@ -562,11 +636,31 @@ input[type="text"], input[type="date"], select {
   /* flat fields */
   function syncFlat() {
     document.querySelectorAll('[data-k]').forEach(function (el) { el.value = S[el.dataset.k] || ''; });
+    enhanceAll(document);
+    renderNotes();
+    var af = $('autoFather'); if (af) af.checked = S.autoFather !== '0';
     var r = document.querySelector('input[name="marital"][value="' + S.marital + '"]');
     document.querySelectorAll('input[name="marital"]').forEach(function (x) { x.checked = false; });
     if (r) r.checked = true;
     showMarital();
     autoCount();
+  }
+  function renderNotes() {
+    var nums = C.numsOf(S), k = 0, html = '<li class="lt" style="background:none;border:0;padding:0 0 2px;user-select:auto">' + C.NOTES1_TITLE + '</li>';
+    C.NOTES1.forEach(function (n, i) {
+      var u = false, out = '';
+      n.split(/(\[\[|\]\])/).forEach(function (seg) {
+        if (seg === '[[') { u = true; return; }
+        if (seg === ']]') { u = false; return; }
+        var body = seg.split(/(\d+)/).map(function (p, j) {
+          if (j % 2 === 1) { var v = nums[k]; return '<input class="nn" type="text" inputmode="numeric" autocomplete="off" data-ni="' + (k++) + '" value="' + v + '" style="--w:' + Math.max(v.length, 2) + '" aria-label="رقم أو تاريخ في البند ' + A(i + 1) + '">'; }
+          return p.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+        }).join('');
+        out += u ? '<u>' + body + '</u>' : body;
+      });
+      html += '<li><span class="ln">' + A(i + 1) + '-</span>' + out + '</li>';
+    });
+    $('notesBox').innerHTML = html;
   }
   function showMarital() {
     document.querySelectorAll('.radio').forEach(function (d) { d.classList.toggle('on', d.dataset.opt === S.marital); });
@@ -574,9 +668,56 @@ input[type="text"], input[type="date"], select {
   }
   function autoCount() { $('childrenCount').placeholder = 'تلقائي: ' + A(C.childrenCount(Object.assign({}, S, { childrenCount: '' })) || '0'); }
 
+  /* year / month / day pickers: tap and choose */
+  var MONTHS = ['كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول'];
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+  function fillDays(ds, y, m, keep) {
+    var n = (y && m) ? new Date(+y, +m, 0).getDate() : 31, h = ['<option value="">اليوم</option>'];
+    for (var d = 1; d <= n; d++) h.push('<option value="' + d + '">' + A(d) + '</option>');
+    ds.innerHTML = h.join('');
+    ds.value = keep && +keep <= n ? String(+keep) : '';
+  }
+  function syncPicker(el) {
+    var w = el.nextSibling; if (!w || !w.classList || !w.classList.contains('dp')) return;
+    var m = /^(\d{4})(?:-(\d{1,2}))?(?:-(\d{1,2}))?$/.exec(el.value || '');
+    var sy = w.querySelector('.dy'), sm = w.querySelector('.dm'), sd = w.querySelector('.dd');
+    sy.value = m ? m[1] : ''; sm.value = m && m[2] ? String(+m[2]) : '';
+    fillDays(sd, sy.value, sm.value, m && m[3] ? m[3] : '');
+  }
+  function enhanceAll(root) {
+    root.querySelectorAll('[data-k$="Date"], [data-f="dob"]').forEach(function (el) {
+      if (!el.dataset.pk) {
+        el.dataset.pk = '1'; el.type = 'hidden';
+        var w = document.createElement('div'); w.className = 'dp';
+        var yr = ['<option value="">السنة</option>'], mo = ['<option value="">الشهر</option>'];
+        for (var y = 2032; y >= 1940; y--) yr.push('<option value="' + y + '">' + A(y) + '</option>');
+        MONTHS.forEach(function (n, i) { mo.push('<option value="' + (i + 1) + '">' + A(i + 1) + ' - ' + n + '</option>'); });
+        w.innerHTML = '<select class="dy" aria-label="السنة">' + yr.join('') + '</select><select class="dm" aria-label="الشهر">' + mo.join('') + '</select><select class="dd" aria-label="اليوم"></select>';
+        el.parentNode.insertBefore(w, el.nextSibling);
+        fillDays(w.querySelector('.dd'), '', '', '');
+        w.addEventListener('change', function (e) {
+          e.stopPropagation();
+          var sy = w.querySelector('.dy'), sm = w.querySelector('.dm'), sd = w.querySelector('.dd');
+          if (e.target !== sd) fillDays(sd, sy.value, sm.value, sd.value);
+          var v = '';
+          if (sy.value) { v = sy.value; if (sm.value) { v += '-' + pad2(+sm.value); if (sd.value) v += '-' + pad2(+sd.value); } }
+          el.value = v;
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+      }
+      syncPicker(el);
+    });
+  }
+
   document.addEventListener('input', function (e) {
     var t = e.target;
-    if (t.dataset && t.dataset.k) { S[t.dataset.k] = t.value; save(); autoCount(); }
+    if (t.dataset && t.dataset.ni != null) {
+      var clean = t.value.replace(/[٠-٩]/g, function (c) { return String(c.charCodeAt(0) - 1632); }).replace(/[^0-9]/g, '');
+      if (clean !== t.value) t.value = clean;
+      t.style.setProperty('--w', Math.max(clean.length, 2));
+      var arr = C.numsOf(S); arr[+t.dataset.ni] = clean; S.notesNums = JSON.stringify(arr); save();
+    }
+    else if (t.dataset && t.dataset.k) { S[t.dataset.k] = t.value; save(); autoCount(); }
     else if (t.dataset && t.dataset.list) {
       S[t.dataset.list][+t.dataset.i][t.dataset.f] = t.value; save(); autoCount();
     }
@@ -602,6 +743,7 @@ input[type="text"], input[type="date"], select {
   }
   function fillList(host, list) {
     host.querySelectorAll('[data-list]').forEach(function (el) { el.value = S[list][+el.dataset.i][el.dataset.f] || ''; });
+    enhanceAll(host);
   }
   function renderKids() {
     $('kids').innerHTML = S.children.map(kidHTML).join(''); fillList($('kids'), 'children');
@@ -629,6 +771,11 @@ input[type="text"], input[type="date"], select {
 
   /* clear all with in-page confirmation */
   var clearT;
+  $('autoFather').addEventListener('change', function () { S.autoFather = this.checked ? '1' : '0'; save(); });
+  $('restoreNotes').addEventListener('click', function () {
+    var b = C.blankState(); S.notesNums = b.notesNums;
+    syncFlat(); save(); say('تمت استعادة التواريخ والأرقام الأصلية.');
+  });
   $('clearBtn').addEventListener('click', function () {
     var b = $('clearBtn');
     if (!b.classList.contains('confirm')) {
