@@ -90,6 +90,8 @@ input[type="text"], input[type="date"], select, textarea {
 .locked li { position: relative; padding: 10px 40px 10px 12px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; line-height: 2.4; font-size: 14.5px; user-select: none; }
 .locked .ln { position: absolute; right: 12px; top: 10px; color: var(--muted); font-weight: 600; font-variant-numeric: tabular-nums; }
 .locked .lt { font-weight: 600; margin: 0 0 4px; }
+.locked input.nn { cursor: default; background: var(--bg); color: var(--ink); caret-color: transparent;
+ }
 .locked input.nn { display: inline-block; flex: none; width: calc(var(--w, 4) * 1ch + 22px); min-width: 0; max-width: 100%; min-height: 30px; padding: 0 6px; margin: 0 2px; text-align: center; direction: ltr; border: 1.5px solid var(--accent); background: var(--surface); border-radius: 5px; font-weight: 600; vertical-align: middle; user-select: text; }
 .list { display: flex; flex-direction: column; gap: 10px; }
 .add { align-self: flex-start; background: var(--accent-soft); color: var(--accent); border: 1px dashed var(--accent); border-radius: 6px; padding: 8px 14px; font-weight: 500; }
@@ -141,6 +143,10 @@ input[type="text"], input[type="date"], select, textarea {
 .idb.r2 .idl { width: 50%; }
 .idb .dv { flex: none; max-width: 100%; white-space: nowrap; overflow: hidden; }
 .idb .dv:empty { min-width: 110px; }
+/* ترتيب الترويسة كما في الأصل: يمين (الاسم / القسم) ويسار (رقم الشركة / العنوان الوظيفي) بعرض موحّد وخطوط منقّطة ممتدة */
+.idb.r1 .idr, .idb.r2 .idr { width: 48%; }
+.idb.r1 .idl, .idb.r2 .idl { width: 46%; margin-left: 0; }
+.idb .dv { flex: none; width: auto; }
 .rf { flex: 1; display: flex; align-items: baseline; gap: 8px; min-width: 0; font-size: 14.5px; }
 .rf b { white-space: nowrap; }
 .dv { flex: 1; min-width: 0; min-height: 19px; border-bottom: 1px dotted #000; padding: 0 4px 5px; line-height: 1.5; font-weight: 400; overflow-wrap: anywhere; font-size: 14px; }
@@ -247,10 +253,9 @@ input[type="text"], input[type="date"], select, textarea {
 
     <section class="blk">
       <h2>المستمسكات المطلوبة والمشمولين بملء الاستمارة</h2>
-      <p class="hint">النص ثابت ولا يمكن تعديله. يمكنك تغيير التواريخ والأرقام فقط (الحقول المحاطة بإطار).</p>
+      <p class="hint">النص والتواريخ والأرقام ثابتة ولا يمكن تعديلها، وتُحسب تلقائياً من سنة الجرد السنوي.</p>
       <ol class="locked" id="notesBox"></ol>
-      <div><button type="button" class="ghost" id="restoreNotes">استعادة التواريخ والأرقام الأصلية</button></div>
-    </section>
+          </section>
 
     <section class="blk">
       <h2>التوقيع</h2>
@@ -306,13 +311,16 @@ input[type="text"], input[type="date"], select, textarea {
     var f = String((s && s.empName) || '').trim().split(/\s+/).slice(0, 3).join(' ');
     return f ? n + ' ' + f : n;
   }
-  function defaultNums() { var a = []; NOTES1.forEach(function (n) { (n.match(/\d+/g) || []).forEach(function (d) { a.push(d); }); }); return a; }
-  function numsOf(s) {
-    var d = defaultNums(), a;
-    try { a = JSON.parse(s.notesNums || '[]'); } catch (e) { a = []; }
-    if (!Array.isArray(a) || a.length !== d.length) return d;
-    return a.map(function (x, i) { x = String(x == null ? '' : x).replace(/[^0-9]/g, ''); return x || d[i]; });
+  /* أرقام البندين ٤ و٥ تُحسب من سنة الجرد (مثال 2027/2026): مواليد الطلاب (س-17 / س-22)، إيقاف التولد (س-23)، مواليد الإناث (س-17) حيث س = السنة الأصغر */
+  function yearPair(inv) { var m = /(\d{4})\D+(\d{4})/.exec(String(inv || '').replace(/[٠-٩]/g, function (c) { return String(c.charCodeAt(0) - 1632); })); return m ? [+m[1], +m[2]] : null; }
+  function defaultNums(s) {
+    var a = []; NOTES1.forEach(function (n) { (n.match(/\d+/g) || []).forEach(function (d) { a.push(d); }); });
+    var p = yearPair(s && s.invYear);
+    if (p && a.length === 7) { var y = Math.min(p[0], p[1]); a = [String(y - 17), String(y - 22), String(y), String(Math.max(p[0], p[1])), String(y - 23), '24', String(y - 17)]; }
+    return a;
   }
+  /* البندان ٤ و٥: الأرقام تُحسب دائماً من سنة الجرد ولا يعدّلها المستخدم */
+  function numsOf(s) { return defaultNums(s); }
   function notesList(s) {
     var nums = numsOf(s), k = 0;
     return NOTES1.map(function (n) { return n.replace(/\d+/g, function () { return nums[k++]; }); });
@@ -352,7 +360,7 @@ input[type="text"], input[type="date"], select, textarea {
       children: kids, daughters: girls,
       signDate: '',
       invYear: '2027/2026',
-      notesNums: JSON.stringify(defaultNums()),
+      notesNums: JSON.stringify(defaultNums({ invYear: '2027/2026' })),
       autoFather: '1'
     };
   }
@@ -604,7 +612,7 @@ input[type="text"], input[type="date"], select, textarea {
 
   root.FormCore = {
     blankState: blankState, emptyChild: emptyChild, emptyDaughter: emptyDaughter,
-    sheetsHTML: sheetsHTML, ar: ar, NOTES1: NOTES1, NOTES1_TITLE: NOTES1_TITLE, numsOf: numsOf, buildDocx: buildDocx, childrenCount: childrenCount,
+    sheetsHTML: sheetsHTML, ar: ar, NOTES1: NOTES1, NOTES1_TITLE: NOTES1_TITLE, numsOf: numsOf, defaultNums: defaultNums, yearPair: yearPair, buildDocx: buildDocx, childrenCount: childrenCount,
     MAX_CHILDREN: MAX_CHILDREN, MAX_DAUGHTERS: MAX_DAUGHTERS
   };
 })(typeof window !== 'undefined' ? window : globalThis);
@@ -653,7 +661,7 @@ input[type="text"], input[type="date"], select, textarea {
         if (seg === '[[') { u = true; return; }
         if (seg === ']]') { u = false; return; }
         var body = seg.split(/(\d+)/).map(function (p, j) {
-          if (j % 2 === 1) { var v = nums[k]; return '<input class="nn" type="text" inputmode="numeric" autocomplete="off" data-ni="' + (k++) + '" value="' + v + '" style="--w:' + Math.max(v.length, 2) + '" aria-label="رقم أو تاريخ في البند ' + A(i + 1) + '">'; }
+          if (j % 2 === 1) { return nums[k++]; }
           return p.replace(/&/g, '&amp;').replace(/</g, '&lt;');
         }).join('');
         out += u ? '<u>' + body + '</u>' : body;
@@ -711,13 +719,10 @@ input[type="text"], input[type="date"], select, textarea {
 
   document.addEventListener('input', function (e) {
     var t = e.target;
-    if (t.dataset && t.dataset.ni != null) {
-      var clean = t.value.replace(/[٠-٩]/g, function (c) { return String(c.charCodeAt(0) - 1632); }).replace(/[^0-9]/g, '');
-      if (clean !== t.value) t.value = clean;
-      t.style.setProperty('--w', Math.max(clean.length, 2));
-      var arr = C.numsOf(S); arr[+t.dataset.ni] = clean; S.notesNums = JSON.stringify(arr); save();
+    if (t.dataset && t.dataset.k) {
+      S[t.dataset.k] = t.value; save(); autoCount();
+      if (t.dataset.k === 'invYear' && C.yearPair(t.value)) { S.notesNums = JSON.stringify(C.defaultNums(S)); renderNotes(); save(); }
     }
-    else if (t.dataset && t.dataset.k) { S[t.dataset.k] = t.value; save(); autoCount(); }
     else if (t.dataset && t.dataset.list) {
       S[t.dataset.list][+t.dataset.i][t.dataset.f] = t.value; save(); autoCount();
     }
@@ -772,10 +777,6 @@ input[type="text"], input[type="date"], select, textarea {
   /* clear all with in-page confirmation */
   var clearT;
   $('autoFather').addEventListener('change', function () { S.autoFather = this.checked ? '1' : '0'; save(); });
-  $('restoreNotes').addEventListener('click', function () {
-    var b = C.blankState(); S.notesNums = b.notesNums;
-    syncFlat(); save(); say('تمت استعادة التواريخ والأرقام الأصلية.');
-  });
   $('clearBtn').addEventListener('click', function () {
     var b = $('clearBtn');
     if (!b.classList.contains('confirm')) {
