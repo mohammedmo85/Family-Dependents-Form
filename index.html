@@ -253,7 +253,6 @@ input[type="text"], input[type="date"], select, textarea {
 
     <section class="blk">
       <h2>المستمسكات المطلوبة والمشمولين بملء الاستمارة</h2>
-      <p class="hint">النص والتواريخ والأرقام ثابتة ولا يمكن تعديلها، وتُحسب تلقائياً من سنة الجرد السنوي.</p>
       <ol class="locked" id="notesBox"></ol>
           </section>
 
@@ -654,7 +653,7 @@ input[type="text"], input[type="date"], select, textarea {
     autoCount();
   }
   function renderNotes() {
-    var nums = C.numsOf(S), k = 0, html = '<li class="lt" style="background:none;border:0;padding:0 0 2px;user-select:auto">' + C.NOTES1_TITLE + '</li>';
+    var nums = C.numsOf(S), k = 0, html = '';
     C.NOTES1.forEach(function (n, i) {
       var u = false, out = '';
       n.split(/(\[\[|\]\])/).forEach(function (seg) {
